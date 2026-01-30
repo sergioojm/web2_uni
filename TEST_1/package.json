@@ -1,0 +1,26 @@
+{
+  "name": "web2_uni",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+   "scripts": {
+    "dev": "node --watch --env-file=.env src/index.js",
+    "start": "node --env-file=.env src/index.js",
+    "test": "node --test"
+    },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergioojm/web2_uni.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/sergioojm/web2_uni/issues"
+  },
+  "homepage": "https://github.com/sergioojm/web2_uni#readme",
+   "engines": {
+    "node": ">=22.0.0"
+  }
+}
