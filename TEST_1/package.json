@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
-   "scripts": {
+  "scripts": {
     "dev": "node --watch --env-file=.env src/index.js",
     "start": "node --env-file=.env src/index.js",
     "test": "node --test"
-    },
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sergioojm/web2_uni.git"
@@ -20,7 +20,13 @@
     "url": "https://github.com/sergioojm/web2_uni/issues"
   },
   "homepage": "https://github.com/sergioojm/web2_uni#readme",
-   "engines": {
+  "engines": {
     "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "zod": "^4.3.6"
   }
 }
