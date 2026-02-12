@@ -2,10 +2,14 @@
 
 
 ### Health
-GET {{baseUrl}}/health
-Accept: application/json
+# GET {{baseUrl}}/health
+# Accept: application/json
 
+POST {{baseUrl}}/api/usuarios
+Content-Type: application/json
 
-GET {{baseUrl}}/
-
-
+{
+    "name": "putin",
+    "email": "niggermaxer@gmail.com",
+    "nivel": "basico"
+}

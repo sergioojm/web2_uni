@@ -3,6 +3,7 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import routes from './routes/index.js';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
@@ -28,5 +29,8 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api', routes);
+
+app.use(errorHandler);
+app.use(notFoundHandler);
 
 export default app;
