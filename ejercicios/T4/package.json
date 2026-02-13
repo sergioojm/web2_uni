@@ -1,0 +1,24 @@
+{
+  "name": "t4",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "sergioojm",
+  "type": "module",
+   "main": "src/index.js",
+  "scripts": {
+    "dev": "node --watch --env-file=.env src/index.js",
+    "start": "node --env-file=.env src/index.js",
+    "test": "node --test"
+  },
+    "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "zod": "^4.3.6"
+  },
+    "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergioojm/web2_uni.git"
+  }
+}
