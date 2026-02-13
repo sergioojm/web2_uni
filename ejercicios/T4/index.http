@@ -9,17 +9,20 @@
 # Content-Type: application/json
 
 # {
-#     "title":"mi nueva tarea",
-#     "description":"una descripcion asi random para probar",
-#     "priority":"low"
+#     "title":"nueva tarea",
+#     "description":"no se movida",
+#     "priority":"high"
 # }
 
-PUT  {{baseUrl}}/api/tareas/2
-Content-Type: application/json
+# PUT  {{baseUrl}}/api/tareas/2
+# Content-Type: application/json
 
-{
-    "title": "tarea actualizada",
-    "description": "descripcion actualizada para tarea 2",
-    "priority": "high",
-    "completed": "true"
-}
+# {
+#     "title": "tarea actualizada",
+#     "description": "descripcion actualizada para tarea 2",
+#     "priority": "high",
+#     "completed": "true"
+# }
+
+
+DELETE {{baseUrl}}/api/tareas/2
