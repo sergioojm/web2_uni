@@ -1,0 +1,25 @@
+@baseUrl = http://localhost:3000
+
+
+### Health
+# GET {{baseUrl}}/health
+# Accept: application/json
+
+# POST {{baseUrl}}/api/tareas
+# Content-Type: application/json
+
+# {
+#     "title":"mi nueva tarea",
+#     "description":"una descripcion asi random para probar",
+#     "priority":"low"
+# }
+
+PUT  {{baseUrl}}/api/tareas/2
+Content-Type: application/json
+
+{
+    "title": "tarea actualizada",
+    "description": "descripcion actualizada para tarea 2",
+    "priority": "high",
+    "completed": "true"
+}
