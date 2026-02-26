@@ -1,6 +1,6 @@
 import multer from 'multer';
 import { extname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname } from 'node:path';
 
 // Obtener el directorio del archivo actual
@@ -11,8 +11,8 @@ const __dirname = dirname(__filename);
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // Convertir la ruta a formato file://
-    const uploadPath = new URL(join(__dirname, '../../storage'), 'file://');
-    cb(null, uploadPath);
+    const fileURL = pathToFileURL(join(__dirname, '../../storage')).href; // chupame los putos huevos IA de los cojones
+    cb(null, fileURL);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;

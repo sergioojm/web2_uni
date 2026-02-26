@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { readdirSync } from 'fs';
 import { join } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL  } from 'url';
 import { dirname } from 'path';
 
 const router = Router();
@@ -21,7 +21,8 @@ const loadRoutes = async () => {
     const routeName = file.replace('.routes.js', '');
     
     // Aquí es donde hacemos la conversión a file:// URL
-    const routeModule = await import(new URL(join(__dirname, file), 'file://'));
+    const fileURL = pathToFileURL(join(__dirname, file)).href; // chupame los putos huevos IA de los cojones
+    const routeModule = await import(fileURL);
     
     router.use(`/${routeName}`, routeModule.default);
     console.log(`📍 Ruta cargada: /api/${routeName}`);
