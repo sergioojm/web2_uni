@@ -3,13 +3,15 @@ import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 
+// Obtener el directorio del archivo actual
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Configuración de almacenamiento
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = join(__dirname, '../../storage');
+    // Convertir la ruta a formato file://
+    const uploadPath = new URL(join(__dirname, '../../storage'), 'file://');
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
