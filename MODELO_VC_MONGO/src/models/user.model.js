@@ -1,4 +1,3 @@
-// src/models/user.model.js
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema(
@@ -13,7 +12,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: [true, 'El email es requerido'],
-    //   unique: true,
+      unique: true,
       lowercase: true,
       trim: true,
       match: [/^\S+@\S+\.\S+$/, 'Email no válido']
@@ -21,8 +20,8 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, 'La contraseña es requerida'],
-      minlength: 8,
-      select: false  // No incluir en consultas por defecto
+      minlength: [8, 'Mínimo 8 caracteres'],
+      select: false
     },
     role: {
       type: String,
@@ -42,16 +41,15 @@ const userSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true,   // Añade createdAt y updatedAt
-    versionKey: false   // Elimina __v
+    timestamps: true,
+    versionKey: false
   }
 );
 
-// Índices para mejorar rendimiento
-userSchema.index({ email: 1 });
+// Índices (email ya tiene índice único por "unique: true")
 userSchema.index({ role: 1, isActive: 1 });
 
-// Ocultar password al convertir a JSON
+// Ocultar password en JSON
 userSchema.methods.toJSON = function() {
   const user = this.toObject();
   delete user.password;
@@ -59,7 +57,5 @@ userSchema.methods.toJSON = function() {
 };
 
 const User = mongoose.model('User', userSchema);
-
-
 
 export default User;

@@ -1,14 +1,13 @@
-// src/routes/index.js
 import { Router } from 'express';
 import { readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 
 const router = Router();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-
-const __dirname = import.meta.dirname;
-
-
+// Cargar automáticamente archivos *.routes.js
 const routeFiles = readdirSync(__dirname).filter(
   (file) => file.endsWith('.routes.js')
 );
