@@ -5,6 +5,11 @@ import dbConnect from './config/db.js';
 import routes from './routes/index.js';
 import { errorHandler, notFound } from './middleware/error.middleware.js';
 
+// tengo unos DNS distintos configurados
+// he tenido que forzar a NODE a usar esos DNS
+import dns from "node:dns/promises";
+dns.setServers(["1.1.1.1", "8.8.8.8"]);   
+
 const app = express();
 
 // Middleware globales

@@ -25,7 +25,7 @@ GET {{baseUrl}}/users?page=1&limit=5 HTTP/1.1
 GET {{baseUrl}}/users?role=admin HTTP/1.1
 
 ### Obtener usuario por ID (reemplazar con ID real)
-GET {{baseUrl}}/users/507f1f77bcf86cd799439011 HTTP/1.1
+GET {{baseUrl}}/users/69a0a7fa69dcbe1953f72d83 HTTP/1.1
 
 ### Crear usuario
 POST {{baseUrl}}/users HTTP/1.1
@@ -38,7 +38,7 @@ Content-Type: {{contentType}}
 }
 
 ### Actualizar usuario
-PUT {{baseUrl}}/users/507f1f77bcf86cd799439011 HTTP/1.1
+PUT {{baseUrl}}/users/69a0a7fa69dcbe1953f72d83 HTTP/1.1
 Content-Type: {{contentType}}
 
 {
@@ -77,13 +77,13 @@ Content-Type: {{contentType}}
 }
 
 ### Registrar reproducción
-POST {{baseUrl}}/tracks/507f1f77bcf86cd799439011/play HTTP/1.1
+POST {{baseUrl}}/tracks/69a0a823bf3e39aed0b97860/play HTTP/1.1
 
 ### Dar like
-POST {{baseUrl}}/tracks/507f1f77bcf86cd799439011/like HTTP/1.1
+POST {{baseUrl}}/tracks/69a0a823bf3e39aed0b97860/like HTTP/1.1
 
 ### Actualizar track
-PUT {{baseUrl}}/tracks/507f1f77bcf86cd799439011 HTTP/1.1
+PUT {{baseUrl}}/tracks/69a0a823bf3e39aed0b97860 HTTP/1.1
 Content-Type: {{contentType}}
 
 {
