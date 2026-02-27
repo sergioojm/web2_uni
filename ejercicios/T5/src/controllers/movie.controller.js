@@ -2,6 +2,7 @@ import Movie from '../models/movie.model.js';
 import { handleHttpError } from '../utils/handleError.js';
 import { join } from 'node:path';
 import { stat, unlink } from 'node:fs/promises';
+import { title } from 'node:process';
 
 // GET /api/movies
 export const getMovies = async (req, res) => {
@@ -10,7 +11,7 @@ export const getMovies = async (req, res) => {
 	const filter = {};
 	if (genre) filter.genre = genre;
 	if (director) filter.director = director;
-	if (search) filter.search = { $regex: search, $options: 'i' };
+	if (search) filter.title = { $regex: search, $options: 'i' };
 
 	const skip = (Number(page) - 1) * Number(limit);
 

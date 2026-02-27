@@ -1,7 +1,7 @@
 ### Base URL
 @baseUrl = http://localhost:3000/api
 @baseUrlUploads = http://localhost:3000/uploads
-@testMovieId = 69a17a42a19ea48098557a1c
+@testMovieId = 69a18201af7366314ba02fd6
 
 ### Listar películas
 GET {{baseUrl}}/movies
