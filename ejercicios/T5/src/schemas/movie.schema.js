@@ -45,6 +45,12 @@ export const getMovieSchema = z.object({
     })
 });
 
+export const getMovieFileNameSchema = z.object({
+    params: z.object({
+        filename: z.string().min(1, 'El nombre del archivo es requerido')
+    })
+});
+
 // {
 //   title: String,        // Requerido, mín 2 caracteres
 //   director: String,     // Requerido

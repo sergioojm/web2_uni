@@ -78,8 +78,6 @@ movieSchema.set('toJSON', { virtuals: true });
 movieSchema.set('toObject', { virtuals: true });
 
 
-
-
 const Movie = mongoose.model('Movie', movieSchema, 'movies_collection');
 
 export default Movie;

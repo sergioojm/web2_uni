@@ -26,7 +26,7 @@ app.get('/health', (req, res) => {
 });
 
 
-app.use('/uploads', express.static('storage'));
+app.use('/uploads', express.static('uploads'));
 app.use('/api', routes);
 
 
