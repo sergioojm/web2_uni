@@ -5,12 +5,12 @@ import { stat, unlink } from 'node:fs/promises';
 
 // GET /api/movies
 export const getMovies = async (req, res) => {
-	const { page = 1, limit = 10, genre, director, title } = req.query;
+	const { page = 1, limit = 10, genre, director, search } = req.query;
 
 	const filter = {};
 	if (genre) filter.genre = genre;
 	if (director) filter.director = director;
-	if (title) filter.title = { $regex: title, $options: 'i' };
+	if (search) filter.search = { $regex: search, $options: 'i' };
 
 	const skip = (Number(page) - 1) * Number(limit);
 

@@ -40,7 +40,7 @@ POST {{baseUrl}}/movies/{{testMovieId}}/rent
 POST {{baseUrl}}/movies/{{testMovieId}}/return
 
 ### Subir carátula (usar curl para multipart)
-# curl -X PATCH http://localhost:3000/api/movies/2/cover -F "file=@/ruta/a/tu/cover.jpg"
+# curl -X PATCH http://localhost:3000/api/movies/id/cover -F "file=@C:\workspace\foton.jpg"
 
 ### Obtener carátula por movie id (devuelve la imagen directamente)
 GET {{baseUrl}}/movies/{{testMovieId}}/cover
