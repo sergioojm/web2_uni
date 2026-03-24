@@ -1,0 +1,123 @@
+### Variables
+@baseUrl = http://localhost:3000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWMyZTkyNTFhNjYwNzllMzlhMWQxOGMiLCJpYXQiOjE3NzQzODEzNTAsImV4cCI6MTc3NDM4ODU1MH0.jW-skzfai1Cu7zqBhDbyyuNtyLN9yWC_woYgq7lkpEY
+@podcastId = 69c2e95d1a66079e39a1d195
+
+# ──────────────────────────────────────────────
+# AUTH
+# ──────────────────────────────────────────────
+
+### Register (user normal)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "testuser@example.com",
+  "password": "password123"
+}
+
+###
+
+### Register (admin)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "admin@example.com",
+  "password": "adminpass1",
+  "role": "admin"
+}
+
+###
+
+### Login (user normal)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "password123"
+}
+
+###
+
+### Login (admin)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "adminpass1"
+}
+
+###
+
+### Get me (requiere token)
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+###
+
+# ──────────────────────────────────────────────
+# PODCASTS
+# ──────────────────────────────────────────────
+
+### POST create podcast (requiere token usuario)
+POST {{baseUrl}}/podcasts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "PODCAST 2",
+  "description": "Descripción detallada del podcast de prueba",
+  "category": "tech",
+  "duration": 3600,
+  "episodes": 5
+}
+
+###
+
+### GET admin all podcasts — incluye no publicados (requiere token admin)
+GET {{baseUrl}}/podcasts/admin/all
+Authorization: Bearer {{token}}
+
+###
+
+### PATCH publish podcast — togglea published (requiere token admin)
+# Copiar el _id del podcast creado en @podcastId antes de ejecutar
+PATCH {{baseUrl}}/podcasts/{{podcastId}}/publish
+Authorization: Bearer {{token}}
+
+###
+
+### GET all published podcasts (público) — solo aparecen los publicados
+GET {{baseUrl}}/podcasts
+
+###
+
+### GET single podcast by ID (público)
+GET {{baseUrl}}/podcasts/{{podcastId}}
+
+###
+
+### PUT update podcast (requiere token, solo el autor)
+PUT {{baseUrl}}/podcasts/{{podcastId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Podcast Actualizado",
+  "description": "Nueva descripción del podcast actualizado",
+  "category": "science",
+  "episodes": 10
+}
+
+###
+
+### DELETE podcast (requiere token admin)
+DELETE {{baseUrl}}/podcasts/{{podcastId}}
+Authorization: Bearer {{token}}
+
+###

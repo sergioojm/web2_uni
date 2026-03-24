@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /mnt/c/workspace/Universidad/goofyAhProject/ejercicios/T8 -name README* -o -name *.md)",
+      "Bash(find /mnt/c/workspace/Universidad/goofyAhProject -maxdepth 5 -name README*)"
+    ]
+  }
+}
