@@ -1,0 +1,149 @@
+@baseUrl = http://localhost:3000/api
+@token = YOUR_JWT_TOKEN_HERE
+
+### Health check
+GET http://localhost:3000/health
+
+### ─────────────────────────────────────────
+### AUTH
+### ─────────────────────────────────────────
+
+### Register user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "Password123"
+}
+
+### Register librarian
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Jane Librarian",
+  "email": "jane@library.com",
+  "password": "Password123",
+  "role": "LIBRARIAN"
+}
+
+### Register admin
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "admin@library.com",
+  "password": "Password123",
+  "role": "ADMIN"
+}
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "Password123"
+}
+
+### Get my profile
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+### ─────────────────────────────────────────
+### BOOKS
+### ─────────────────────────────────────────
+
+### Get all books
+GET {{baseUrl}}/books
+
+### Get books filtered by genre
+GET {{baseUrl}}/books?genre=Fiction
+
+### Get books filtered by author
+GET {{baseUrl}}/books?author=Orwell
+
+### Get only available books
+GET {{baseUrl}}/books?available=true
+
+### Get single book
+GET {{baseUrl}}/books/BOOK_ID_HERE
+
+### Create book (LIBRARIAN or ADMIN)
+POST {{baseUrl}}/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "isbn": "978-0-7432-7356-5",
+  "title": "1984",
+  "author": "George Orwell",
+  "genre": "Dystopia",
+  "description": "A dystopian novel set in a totalitarian society.",
+  "publishedYear": 1949,
+  "copies": 3
+}
+
+### Update book (LIBRARIAN or ADMIN)
+PUT {{baseUrl}}/books/BOOK_ID_HERE
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Nineteen Eighty-Four",
+  "copies": 5
+}
+
+### Delete book (ADMIN only)
+DELETE {{baseUrl}}/books/BOOK_ID_HERE
+Authorization: Bearer {{token}}
+
+### ─────────────────────────────────────────
+### LOANS
+### ─────────────────────────────────────────
+
+### Request a loan
+POST {{baseUrl}}/loans
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "bookId": "BOOK_ID_HERE"
+}
+
+### Get my loans
+GET {{baseUrl}}/loans/me
+Authorization: Bearer {{token}}
+
+### Get all loans (ADMIN only)
+GET {{baseUrl}}/loans
+Authorization: Bearer {{token}}
+
+### Return a loan
+PATCH {{baseUrl}}/loans/LOAN_ID_HERE/return
+Authorization: Bearer {{token}}
+
+### ─────────────────────────────────────────
+### REVIEWS
+### ─────────────────────────────────────────
+
+### Get reviews for a book
+GET {{baseUrl}}/reviews/book/BOOK_ID_HERE
+
+### Create a review
+POST {{baseUrl}}/reviews
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "bookId": "BOOK_ID_HERE",
+  "rating": 5,
+  "comment": "Excellent book, highly recommended!"
+}
+
+### Delete a review
+DELETE {{baseUrl}}/reviews/REVIEW_ID_HERE
+Authorization: Bearer {{token}}
