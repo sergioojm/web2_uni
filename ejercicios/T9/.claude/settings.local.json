@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(npm install:*)",
-      "Bash(npx prisma:*)",
-      "Bash(DATABASE_URL=\"postgresql://user:pass@localhost:5432/db\" DIRECT_URL=\"postgresql://user:pass@localhost:5432/db\" npx prisma validate 2>&1)"
-    ]
-  }
-}
