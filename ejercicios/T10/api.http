@@ -1,0 +1,65 @@
+@base = http://localhost:3000
+@token = {{login.response.body.token}}
+
+### Health check
+GET {{base}}/health
+
+### ─────────────────────────────────────
+### AUTH
+### ─────────────────────────────────────
+
+### Registrar usuario
+# @name register
+POST {{base}}/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Sergio",
+  "email": "sergio@example.com",
+  "password": "Password1"
+}
+
+###
+
+### Iniciar sesión
+# @name login
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "sergio@example.com",
+  "password": "Password1"
+}
+
+###
+
+### Perfil del usuario autenticado
+GET {{base}}/api/auth/me
+Authorization: Bearer {{token}}
+
+### ─────────────────────────────────────
+### ROOMS
+### ─────────────────────────────────────
+
+### Listar salas
+GET {{base}}/api/rooms
+Authorization: Bearer {{token}}
+
+###
+
+### Crear sala
+# @name createRoom
+POST {{base}}/api/rooms
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "general",
+  "description": "Sala general de chat"
+}
+
+###
+
+### Historial de mensajes de una sala
+GET {{base}}/api/rooms/{{createRoom.response.body.data._id}}/messages
+Authorization: Bearer {{token}}
