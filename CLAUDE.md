@@ -9,8 +9,8 @@ This is a university web2 course repository (Node.js ≥22 required) containing 
 - **`MODELO_VC_MONGO/`** — Reference implementation with MongoDB/Mongoose, file uploads (Multer), and Zod validation. This is the canonical template.
 - **`TEST_1/`** — In-memory data store API (no DB), uses Helmet + Zod, serves as exam practice.
 - **`ejercicios/T4/`** — Exercise: in-memory REST API with Zod validation.
-- **`ejercicios/T5/`** — Exercise project (check contents for specifics).
-- **`ejercicios/T8/`** — Exercise: JWT auth + Swagger docs + Jest tests + Slack webhook + MongoDB.
+- **`ejercicios/T5/`** — Exercise: MongoDB + Multer file uploads (same stack as MODELO_VC_MONGO).
+- **`ejercicios/T8/`** — Exercise: JWT auth + role-based access + Swagger docs + Jest tests + Slack webhook + MongoDB.
 
 Each project is entirely self-contained. Run all commands from inside the specific project directory.
 
@@ -60,6 +60,12 @@ src/
 ### Validation Pattern
 
 Zod schemas in `schemas/` validate `{ body, query, params }` together. The `validate(schema)` middleware from `validate.middleware.js` runs before controllers. `validateObjectId()` guards routes with MongoDB `_id` params.
+
+### Auth Pattern (T8)
+
+JWT auth is split across two middleware files in `ejercicios/T8/`:
+- `session.middleware.js` — verifies the `Authorization: Bearer <token>` header, loads the user from DB, and attaches it to `req.user`
+- `rol.middleware.js` — checks `req.user.role` against allowed roles; must come after `session.middleware.js` in the route chain
 
 ### Error Handling
 
