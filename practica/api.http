@@ -1,0 +1,125 @@
+@host = http://localhost:3000
+@accessToken = PASTE_ACCESS_TOKEN
+@refreshToken = PASTE_REFRESH_TOKEN
+
+### Health
+GET {{host}}/health
+
+### 1) Registro
+POST {{host}}/api/user/register
+Content-Type: application/json
+
+{
+  "email": "admin@bildyapp.com",
+  "password": "12345678"
+}
+
+### 2) Validar email
+PUT {{host}}/api/user/validation
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "code": "123456"
+}
+
+### 3) Login
+POST {{host}}/api/user/login
+Content-Type: application/json
+
+{
+  "email": "admin@bildyapp.com",
+  "password": "12345678"
+}
+
+### 4a) Onboarding — datos personales
+PUT {{host}}/api/user/register
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Ada",
+  "lastName": "Lovelace",
+  "nif": "12345678Z"
+}
+
+### 4b) Onboarding — compañía (empresa)
+PATCH {{host}}/api/user/company
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "isFreelance": false,
+  "name": "BildyApp SL",
+  "cif": "B12345678",
+  "address": {
+    "street": "Gran Vía",
+    "number": "1",
+    "postal": "28013",
+    "city": "Madrid",
+    "province": "Madrid"
+  }
+}
+
+### 4c) Onboarding — autónomo
+PATCH {{host}}/api/user/company
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "isFreelance": true
+}
+
+### 5) Subir logo
+PATCH {{host}}/api/user/logo
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=----bound
+
+------bound
+Content-Disposition: form-data; name="logo"; filename="logo.png"
+Content-Type: image/png
+
+< ./logo.png
+------bound--
+
+### 6) Obtener usuario
+GET {{host}}/api/user
+Authorization: Bearer {{accessToken}}
+
+### 7a) Refresh token
+POST {{host}}/api/user/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+### 7b) Logout
+POST {{host}}/api/user/logout
+Authorization: Bearer {{accessToken}}
+
+### 8) Eliminar (soft)
+DELETE {{host}}/api/user?soft=true
+Authorization: Bearer {{accessToken}}
+
+### 9) Cambiar contraseña
+PUT {{host}}/api/user/password
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "currentPassword": "12345678",
+  "newPassword": "87654321"
+}
+
+### 10) Invitar compañero
+POST {{host}}/api/user/invite
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "email": "guest@bildyapp.com",
+  "name": "Alan",
+  "lastName": "Turing",
+  "nif": "87654321X"
+}
