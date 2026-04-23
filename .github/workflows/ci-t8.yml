@@ -1,0 +1,48 @@
+name: CI - T8 PodcastHub
+
+on:
+  push:
+    branches: [main, deploy/railway]
+    paths:
+      - 'ejercicios/T8/**'
+      - '.github/workflows/ci-t8.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'ejercicios/T8/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+
+    defaults:
+      run:
+        working-directory: ejercicios/T8
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: ejercicios/T8/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Ejecutar tests
+        run: npm test
+        env:
+          NODE_ENV: test
+          MONGODB_TEST_URI: mongodb://localhost:27017/podcasthub_test
+          JWT_SECRET: test-secret-32-characters-long!!
+          LOG_LEVEL: silent

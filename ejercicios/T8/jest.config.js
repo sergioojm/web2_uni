@@ -1,5 +1,5 @@
 export default {
   testEnvironment: 'node',
   transform: {},
-  extensionsToTreatAsEsm: ['.js'],
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
 };
