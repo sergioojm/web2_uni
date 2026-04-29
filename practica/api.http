@@ -1,9 +1,17 @@
 @host = http://localhost:3000
 @accessToken = PASTE_ACCESS_TOKEN
 @refreshToken = PASTE_REFRESH_TOKEN
+@clientId = PASTE_CLIENT_ID
+@projectId = PASTE_PROJECT_ID
+@noteId = PASTE_NOTE_ID
 
 ### Health
 GET {{host}}/health
+
+### Swagger
+GET {{host}}/api-docs
+
+# ─────────────────────── USER ───────────────────────
 
 ### 1) Registro
 POST {{host}}/api/user/register
@@ -11,7 +19,7 @@ Content-Type: application/json
 
 {
   "email": "admin@bildyapp.com",
-  "password": "12345678"
+  "password": "Password123"
 }
 
 ### 2) Validar email
@@ -19,56 +27,27 @@ PUT {{host}}/api/user/validation
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
-{
-  "code": "123456"
-}
+{ "code": "123456" }
 
 ### 3) Login
 POST {{host}}/api/user/login
 Content-Type: application/json
 
-{
-  "email": "admin@bildyapp.com",
-  "password": "12345678"
-}
+{ "email": "admin@bildyapp.com", "password": "Password123" }
 
-### 4a) Onboarding — datos personales
+### 4a) Onboarding personal
 PUT {{host}}/api/user/register
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
-{
-  "name": "Ada",
-  "lastName": "Lovelace",
-  "nif": "12345678Z"
-}
+{ "name": "Ada", "lastName": "Lovelace", "nif": "12345678Z" }
 
-### 4b) Onboarding — compañía (empresa)
+### 4b) Onboarding compañía
 PATCH {{host}}/api/user/company
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
-{
-  "isFreelance": false,
-  "name": "BildyApp SL",
-  "cif": "B12345678",
-  "address": {
-    "street": "Gran Vía",
-    "number": "1",
-    "postal": "28013",
-    "city": "Madrid",
-    "province": "Madrid"
-  }
-}
-
-### 4c) Onboarding — autónomo
-PATCH {{host}}/api/user/company
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-  "isFreelance": true
-}
+{ "isFreelance": false, "name": "BildyApp SL", "cif": "B12345678" }
 
 ### 5) Subir logo
 PATCH {{host}}/api/user/logo
@@ -86,40 +65,154 @@ Content-Type: image/png
 GET {{host}}/api/user
 Authorization: Bearer {{accessToken}}
 
-### 7a) Refresh token
-POST {{host}}/api/user/refresh
-Content-Type: application/json
+# ─────────────────────── CLIENT ───────────────────────
 
-{
-  "refreshToken": "{{refreshToken}}"
-}
-
-### 7b) Logout
-POST {{host}}/api/user/logout
-Authorization: Bearer {{accessToken}}
-
-### 8) Eliminar (soft)
-DELETE {{host}}/api/user?soft=true
-Authorization: Bearer {{accessToken}}
-
-### 9) Cambiar contraseña
-PUT {{host}}/api/user/password
+### Crear cliente
+POST {{host}}/api/client
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "currentPassword": "12345678",
-  "newPassword": "87654321"
+  "name": "García SL",
+  "cif": "B99999999",
+  "email": "garcia@example.com",
+  "phone": "611222333",
+  "address": { "street": "Calle Mayor", "number": "1", "postal": "28001", "city": "Madrid", "province": "Madrid" }
 }
 
-### 10) Invitar compañero
-POST {{host}}/api/user/invite
+### Listar clientes (paginación + filtros)
+GET {{host}}/api/client?page=1&limit=10&name=García&sort=-createdAt
+Authorization: Bearer {{accessToken}}
+
+### Obtener cliente
+GET {{host}}/api/client/{{clientId}}
+Authorization: Bearer {{accessToken}}
+
+### Actualizar cliente
+PUT {{host}}/api/client/{{clientId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{ "phone": "699000111" }
+
+### Archivar cliente (soft)
+DELETE {{host}}/api/client/{{clientId}}?soft=true
+Authorization: Bearer {{accessToken}}
+
+### Listar archivados
+GET {{host}}/api/client/archived
+Authorization: Bearer {{accessToken}}
+
+### Restaurar
+PATCH {{host}}/api/client/{{clientId}}/restore
+Authorization: Bearer {{accessToken}}
+
+### Borrar definitivo
+DELETE {{host}}/api/client/{{clientId}}
+Authorization: Bearer {{accessToken}}
+
+# ─────────────────────── PROJECT ───────────────────────
+
+### Crear proyecto
+POST {{host}}/api/project
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "email": "guest@bildyapp.com",
-  "name": "Alan",
-  "lastName": "Turing",
-  "nif": "87654321X"
+  "name": "Reforma oficina",
+  "projectCode": "PR-2025-001",
+  "client": "{{clientId}}",
+  "address": { "city": "Madrid" },
+  "email": "obra@example.com",
+  "notes": "Plan A"
 }
+
+### Listar proyectos
+GET {{host}}/api/project?page=1&limit=10&client={{clientId}}&active=true&sort=-createdAt
+Authorization: Bearer {{accessToken}}
+
+### Obtener proyecto
+GET {{host}}/api/project/{{projectId}}
+Authorization: Bearer {{accessToken}}
+
+### Actualizar proyecto
+PUT {{host}}/api/project/{{projectId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{ "active": false }
+
+### Archivar / restaurar / borrar
+DELETE {{host}}/api/project/{{projectId}}?soft=true
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{host}}/api/project/archived
+Authorization: Bearer {{accessToken}}
+
+###
+PATCH {{host}}/api/project/{{projectId}}/restore
+Authorization: Bearer {{accessToken}}
+
+###
+DELETE {{host}}/api/project/{{projectId}}
+Authorization: Bearer {{accessToken}}
+
+# ─────────────────────── DELIVERY NOTE ───────────────────────
+
+### Crear albarán de horas
+POST {{host}}/api/deliverynote
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "format": "hours",
+  "client": "{{clientId}}",
+  "project": "{{projectId}}",
+  "description": "Jornada del lunes",
+  "workDate": "2026-04-29",
+  "hours": 8,
+  "workers": [{ "name": "Juan", "hours": 8 }]
+}
+
+### Crear albarán de material
+POST {{host}}/api/deliverynote
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "format": "material",
+  "client": "{{clientId}}",
+  "project": "{{projectId}}",
+  "material": "Cemento",
+  "quantity": 20,
+  "unit": "sacos"
+}
+
+### Listar
+GET {{host}}/api/deliverynote?page=1&limit=10&project={{projectId}}&signed=false&sort=-workDate
+Authorization: Bearer {{accessToken}}
+
+### Obtener (populate)
+GET {{host}}/api/deliverynote/{{noteId}}
+Authorization: Bearer {{accessToken}}
+
+### Descargar PDF
+GET {{host}}/api/deliverynote/pdf/{{noteId}}
+Authorization: Bearer {{accessToken}}
+
+### Firmar (multipart)
+PATCH {{host}}/api/deliverynote/{{noteId}}/sign
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=----bound
+
+------bound
+Content-Disposition: form-data; name="signature"; filename="firma.png"
+Content-Type: image/png
+
+< ./firma.png
+------bound--
+
+### Borrar (sólo si no firmado)
+DELETE {{host}}/api/deliverynote/{{noteId}}
+Authorization: Bearer {{accessToken}}

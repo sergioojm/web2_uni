@@ -1,13 +1,13 @@
 {
   "name": "bildyapp-api",
   "version": "1.0.0",
-  "description": "BildyApp API — Práctica intermedia Web Backend II (gestión de usuarios)",
+  "description": "BildyApp API — Práctica final Web Backend II",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
     "dev": "node --watch --env-file=.env src/index.js",
     "start": "node --env-file=.env src/index.js",
-    "test": "NODE_ENV=test JWT_SECRET=test-secret JWT_REFRESH_SECRET=test-refresh-secret node --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit --detectOpenHandles",
+    "test": "NODE_ENV=test JWT_SECRET=test-secret JWT_REFRESH_SECRET=test-refresh-secret node --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit --detectOpenHandles --runInBand",
     "test:watch": "npm test -- --watch",
     "test:coverage": "npm test -- --coverage"
   },
@@ -15,7 +15,9 @@
     "node": ">=22.0.0"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.717.0",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.5.1",
     "cors": "^2.8.5",
     "express": "^5.0.1",
     "express-mongo-sanitize": "^2.2.0",
@@ -24,6 +26,12 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.5",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.16",
+    "pdfkit": "^0.15.1",
+    "sharp": "^0.33.5",
+    "socket.io": "^4.8.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "zod": "^3.24.1"
   },
   "devDependencies": {
