@@ -3,9 +3,12 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import mongoSanitize from 'express-mongo-sanitize';
+import mongoose from 'mongoose';
 import path from 'node:path';
+import swaggerUi from 'swagger-ui-express';
 
-import userRoutes from './routes/user.routes.js';
+import apiRoutes from './routes/index.js';
+import { swaggerSpec } from './config/swagger.js';
 import { notFound, errorHandler } from './middleware/error-handler.js';
 import './services/notification.service.js';
 
@@ -31,12 +34,18 @@ app.use(
 );
 
 app.use('/uploads', express.static(path.resolve('uploads')));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/health', (_req, res) =>
-  res.json({ status: 'ok', timestamp: new Date().toISOString() })
+  res.json({
+    status: 'ok',
+    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
+  })
 );
 
-app.use('/api/user', userRoutes);
+app.use('/api', apiRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
