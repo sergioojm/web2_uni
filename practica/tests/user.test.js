@@ -116,7 +116,9 @@ describe('PUT /api/user/validation', () => {
 
     expect(res.body.error).toBe(true);
 
-    const dbUser = await User.findOne({ email: testUser.email });
+    const dbUser = await User.findOne({ email: testUser.email }).select(
+      '+verificationAttempts'
+    );
     expect(dbUser.verificationAttempts).toBe(2);
   });
 
@@ -625,8 +627,10 @@ describe('DELETE /api/user', () => {
 
     expect(res.body.message).toMatch(/soft-deleted/i);
 
-    // Verificar que el campo deleted es true
-    const dbUser = await User.findOne({ email: 'borrable@example.com' });
+    // Verificar que el campo deleted es true (bypass pre-hook)
+    const dbUser = await User.findOne({
+      email: 'borrable@example.com'
+    }).setOptions({ withDeleted: true });
     expect(dbUser.deleted).toBe(true);
   });
 

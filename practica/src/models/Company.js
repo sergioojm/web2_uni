@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { applySoftDeletePlugin } from '../utils/softDelete.js';
 
 const addressSchema = new mongoose.Schema(
   {
@@ -33,6 +34,8 @@ const companySchema = new mongoose.Schema(
 
 companySchema.index({ cif: 1 });
 companySchema.index({ owner: 1 });
+
+applySoftDeletePlugin(companySchema);
 
 const Company = mongoose.model('Company', companySchema);
 

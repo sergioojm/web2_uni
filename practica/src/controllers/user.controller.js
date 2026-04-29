@@ -12,6 +12,7 @@ import {
   verifyRefreshToken
 } from '../utils/handleJwt.js';
 import { notifier } from '../services/notification.service.js';
+import { sendVerificationEmail } from '../services/mail.service.js';
 
 const issueTokens = (user) => ({
   accessToken: signAccessToken(user),
@@ -46,6 +47,9 @@ export const register = async (req, res, next) => {
     await user.save();
 
     notifier.emit('user:registered', { user });
+    sendVerificationEmail(user.email, verificationCode).catch((e) =>
+      console.error('mail error:', e.message)
+    );
 
     res.status(201).json({
       message: 'Usuario registrado',
@@ -70,7 +74,7 @@ export const validateEmail = async (req, res, next) => {
   try {
     const { code } = req.body;
     const user = await User.findById(req.user._id).select(
-      '+verificationCode verificationAttempts status'
+      '+verificationCode +verificationAttempts status'
     );
     if (!user) throw AppError.notFound('Usuario no encontrado');
 
@@ -112,9 +116,7 @@ export const validateEmail = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email, deleted: false }).select(
-      '+password'
-    );
+    const user = await User.findOne({ email }).select('+password');
     if (!user) throw AppError.unauthorized('Credenciales inválidas');
 
     const ok = await compare(password, user.password);
@@ -190,7 +192,7 @@ export const onboardingCompany = async (req, res, next) => {
       };
     }
 
-    let company = await Company.findOne({ cif, deleted: false });
+    let company = await Company.findOne({ cif });
 
     if (!company) {
       company = await Company.create({ ...companyData, owner: me._id });
@@ -221,7 +223,7 @@ export const uploadCompanyLogo = async (req, res, next) => {
 
     const logoUrl = `/uploads/${req.file.filename}`;
     const company = await Company.findOneAndUpdate(
-      { _id: req.user.company, deleted: false },
+      { _id: req.user.company },
       { logo: logoUrl },
       { new: true }
     );
@@ -237,9 +239,8 @@ export const uploadCompanyLogo = async (req, res, next) => {
 export const getMe = async (req, res, next) => {
   try {
     const user = await User.findOne({
-      _id: req.user._id,
-      deleted: false
-    }).populate({ path: 'company', match: { deleted: false } });
+      _id: req.user._id
+    }).populate('company');
     if (!user) throw AppError.notFound('Usuario no encontrado');
     res.json({ data: { user } });
   } catch (err) {
@@ -258,10 +259,9 @@ export const refresh = async (req, res, next) => {
       throw AppError.unauthorized('Refresh token inválido o expirado');
     }
 
-    const user = await User.findOne({
-      _id: payload._id,
-      deleted: false
-    }).select('+refreshToken');
+    const user = await User.findOne({ _id: payload._id }).select(
+      '+refreshToken'
+    );
     if (!user || user.refreshToken !== refreshToken) {
       throw AppError.unauthorized('Refresh token inválido');
     }
