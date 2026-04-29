@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { applySoftDeletePlugin } from '../utils/softDelete.js';
 
 const addressSchema = new mongoose.Schema(
   {
@@ -39,7 +40,7 @@ const userSchema = new mongoose.Schema(
       default: 'pending'
     },
     verificationCode: { type: String, select: false },
-    verificationAttempts: { type: Number, default: 3 },
+    verificationAttempts: { type: Number, default: 3, select: false },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Company',
@@ -73,6 +74,8 @@ userSchema.virtual('fullName').get(function () {
 userSchema.index({ company: 1 });
 userSchema.index({ status: 1 });
 userSchema.index({ role: 1 });
+
+applySoftDeletePlugin(userSchema);
 
 const User = mongoose.model('User', userSchema);
 
