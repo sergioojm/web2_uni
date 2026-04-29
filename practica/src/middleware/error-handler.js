@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { AppError } from '../utils/AppError.js';
 import { config } from '../config/index.js';
+import { notifySlack } from '../services/slack.service.js';
 
 export const notFound = (req, _res, next) => {
   next(AppError.notFound(`Ruta ${req.method} ${req.originalUrl} no encontrada`));
@@ -54,6 +55,14 @@ export const errorHandler = (err, req, res, _next) => {
       .status(413)
       .json({ error: true, message: 'Archivo demasiado grande' });
   }
+
+  notifySlack({
+    method: req.method,
+    path: req.originalUrl,
+    message: err.message,
+    stack: err.stack,
+    status: 500
+  });
 
   res.status(500).json({
     error: true,

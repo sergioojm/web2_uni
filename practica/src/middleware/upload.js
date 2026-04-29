@@ -7,7 +7,7 @@ import { config } from '../config/index.js';
 const UPLOAD_DIR = path.resolve('uploads');
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
-const storage = multer.diskStorage({
+const diskStorage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
   filename: (_req, file, cb) => {
     const ext = path.extname(file.originalname);
@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const fileFilter = (_req, file, cb) => {
+const imageFilter = (_req, file, cb) => {
   if (!file.mimetype.startsWith('image/')) {
     return cb(AppError.badRequest('Solo se aceptan imágenes'));
   }
@@ -24,7 +24,13 @@ const fileFilter = (_req, file, cb) => {
 };
 
 export const uploadLogo = multer({
-  storage,
-  fileFilter,
+  storage: diskStorage,
+  fileFilter: imageFilter,
   limits: { fileSize: config.uploadMaxSize }
 }).single('logo');
+
+export const uploadSignature = multer({
+  storage: multer.memoryStorage(),
+  fileFilter: imageFilter,
+  limits: { fileSize: config.uploadMaxSize }
+}).single('signature');
