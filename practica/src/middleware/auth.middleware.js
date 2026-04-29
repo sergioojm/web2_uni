@@ -11,7 +11,7 @@ export const authMiddleware = async (req, res, next) => {
     const payload = verifyAccessToken(token);
     if (!payload?._id) throw AppError.unauthorized('Token inválido');
 
-    const user = await User.findOne({ _id: payload._id, deleted: false });
+    const user = await User.findOne({ _id: payload._id });
     if (!user) throw AppError.unauthorized('Usuario no encontrado');
 
     req.user = user;

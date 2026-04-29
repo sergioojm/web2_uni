@@ -12,31 +12,30 @@ const addressSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const companySchema = new mongoose.Schema(
+const clientSchema = new mongoose.Schema(
   {
-    owner: {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    company: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Company',
       required: true
     },
     name: { type: String, required: true, trim: true },
     cif: { type: String, required: true, trim: true, uppercase: true },
+    email: { type: String, trim: true, lowercase: true },
+    phone: { type: String, trim: true },
     address: { type: addressSchema, default: () => ({}) },
-    logo: { type: String, default: null },
-    isFreelance: { type: Boolean, default: false },
     deleted: { type: Boolean, default: false }
   },
-  {
-    timestamps: true,
-    versionKey: false
-  }
+  { timestamps: true, versionKey: false }
 );
 
-companySchema.index({ cif: 1 });
-companySchema.index({ owner: 1 });
+clientSchema.index(
+  { company: 1, cif: 1 },
+  { unique: true, partialFilterExpression: { deleted: false } }
+);
+clientSchema.index({ company: 1, name: 1 });
 
-applySoftDeletePlugin(companySchema);
+applySoftDeletePlugin(clientSchema);
 
-const Company = mongoose.model('Company', companySchema);
-
-export default Company;
+export default mongoose.model('Client', clientSchema);
