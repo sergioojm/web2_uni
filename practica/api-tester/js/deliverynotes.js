@@ -1,4 +1,4 @@
-import { request } from './api.js';
+import { request, openBlob } from './api.js';
 import { getState, setState } from './state.js';
 import { renderTable, openModal, closeModal, toast, showResponse } from './ui.js';
 
@@ -23,13 +23,12 @@ const BASE_FIELDS = [
 ];
 
 const HOURS_FIELDS = [
-  { name: 'hours', label: 'Hours (number)', type: 'number', step: 'any',
-    note: 'For hours format — or use workers JSON below' },
+  { name: 'hours', label: 'Hours (number)', type: 'number', step: 'any', required: true },
 ];
 
 const MATERIAL_FIELDS = [
-  { name: 'material', label: 'Material name', type: 'text', note: 'For material format' },
-  { name: 'quantity', label: 'Quantity', type: 'number', step: 'any', note: 'For material format' },
+  { name: 'material', label: 'Material name', type: 'text', required: true },
+  { name: 'quantity', label: 'Quantity', type: 'number', step: 'any', required: true },
   { name: 'unit', label: 'Unit', type: 'text', note: 'e.g. kg, m, pcs' },
 ];
 
@@ -67,7 +66,7 @@ export async function loadDeliveryNotes() {
   const r = await request('/api/deliverynote', { query: { page, limit: 20 } });
   showResponse(r.raw, r.status);
   if (!r.ok) { toast(r.message, 'error'); return; }
-  const rows = Array.isArray(r.data) ? r.data : (r.data?.deliverynotes ?? []);
+  const rows = Array.isArray(r.data) ? r.data : (r.data?.items ?? r.data?.deliverynotes ?? []);
   document.getElementById('deliverynotes-next').disabled = rows.length < 20;
 
   renderTable('deliverynotes-table-container', rows, COLUMNS, [
@@ -89,9 +88,9 @@ export async function loadDeliveryNotes() {
         }, 'Sign');
       }
     },
-    { label: 'PDF', onClick: row => {
-        const { baseUrl } = getState();
-        window.open(`${baseUrl}/api/deliverynote/pdf/${row._id}`, '_blank');
+    { label: 'PDF', onClick: async row => {
+        const res = await openBlob(`/api/deliverynote/pdf/${row._id}`);
+        if (!res.ok) toast(res.message, 'error');
       }
     },
     { label: 'Delete', onClick: async row => {

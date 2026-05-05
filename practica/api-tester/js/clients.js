@@ -54,7 +54,7 @@ export async function loadClients() {
   const r = await request('/api/client', { query: { page, limit: 20, name } });
   showResponse(r.raw, r.status);
   if (!r.ok) { toast(r.message, 'error'); return; }
-  const rows = Array.isArray(r.data) ? r.data : (r.data?.clients ?? []);
+  const rows = Array.isArray(r.data) ? r.data : (r.data?.items ?? r.data?.clients ?? []);
   document.getElementById('clients-next').disabled = rows.length < 20;
   _renderClients(rows);
 }
@@ -63,7 +63,7 @@ async function loadArchived() {
   const r = await request('/api/client/archived');
   showResponse(r.raw, r.status);
   if (!r.ok) { toast(r.message, 'error'); return; }
-  const rows = Array.isArray(r.data) ? r.data : (r.data?.clients ?? []);
+  const rows = Array.isArray(r.data) ? r.data : (r.data?.items ?? r.data?.clients ?? []);
   _renderClients(rows, true);
 }
 

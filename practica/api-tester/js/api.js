@@ -37,3 +37,23 @@ export async function request(path, { method = 'GET', body, query } = {}) {
     return { ok: false, status: 0, raw: { error: err.message }, data: null, message: err.message };
   }
 }
+
+export async function openBlob(path) {
+  const { baseUrl } = getState();
+  const token = getToken();
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  try {
+    const res = await fetch(baseUrl + path, { headers });
+    if (!res.ok) {
+      const json = await res.json().catch(() => ({}));
+      return { ok: false, message: json?.message ?? `Error ${res.status}` };
+    }
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, message: err.message };
+  }
+}

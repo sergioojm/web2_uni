@@ -55,7 +55,7 @@ export async function loadProjects() {
   const r = await request('/api/project', { query: { page, limit: 20 } });
   showResponse(r.raw, r.status);
   if (!r.ok) { toast(r.message, 'error'); return; }
-  const rows = Array.isArray(r.data) ? r.data : (r.data?.projects ?? []);
+  const rows = Array.isArray(r.data) ? r.data : (r.data?.items ?? r.data?.projects ?? []);
   document.getElementById('projects-next').disabled = rows.length < 20;
   _renderProjects(rows);
 }
@@ -64,7 +64,7 @@ async function loadArchived() {
   const r = await request('/api/project/archived');
   showResponse(r.raw, r.status);
   if (!r.ok) { toast(r.message, 'error'); return; }
-  const rows = Array.isArray(r.data) ? r.data : (r.data?.projects ?? []);
+  const rows = Array.isArray(r.data) ? r.data : (r.data?.items ?? r.data?.projects ?? []);
   _renderProjects(rows, true);
 }
 
