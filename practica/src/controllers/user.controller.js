@@ -13,6 +13,7 @@ import {
 } from '../utils/handleJwt.js';
 import { notifier } from '../services/notification.service.js';
 import { sendVerificationEmail } from '../services/mail.service.js';
+import { uploadBuffer } from '../services/storage.service.js';
 
 const issueTokens = (user) => ({
   accessToken: signAccessToken(user),
@@ -221,10 +222,16 @@ export const uploadCompanyLogo = async (req, res, next) => {
       throw AppError.badRequest('El usuario no tiene compañía asociada');
     }
 
-    const logoUrl = `/uploads/${req.file.filename}`;
+    const { url } = await uploadBuffer(req.file.buffer, {
+      folder: 'logos',
+      filename: req.file.originalname,
+      contentType: req.file.mimetype,
+      optimizeImage: true
+    });
+
     const company = await Company.findOneAndUpdate(
       { _id: req.user.company },
-      { logo: logoUrl },
+      { logo: url },
       { new: true }
     );
     if (!company) throw AppError.notFound('Compañía no encontrada');

@@ -9,7 +9,7 @@ export const notFound = (req, _res, next) => {
 
 export const errorHandler = (err, req, res, _next) => {
   if (config.env !== 'test') {
-    console.error('❌', err.message);
+    console.error(err.message);
   }
 
   if (err instanceof AppError) {

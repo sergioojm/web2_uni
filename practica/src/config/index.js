@@ -15,14 +15,14 @@ export const config = {
 
 export const dbConnect = async () => {
   if (!config.dbUri) {
-    console.error('❌ DB_URI no está definida en .env');
+    console.error('DB_URI no está definida en .env');
     process.exit(1);
   }
   try {
     await mongoose.connect(config.dbUri);
-    console.log('✅ Conectado a MongoDB');
+    console.log('Conectado a MongoDB');
   } catch (error) {
-    console.error('❌ Error conectando a MongoDB:', error.message);
+    console.error('Error conectando a MongoDB:', error.message);
     process.exit(1);
   }
 };

@@ -11,11 +11,11 @@ const start = async () => {
     await dbConnect();
     initSocket(httpServer);
     httpServer.listen(config.port, () => {
-      console.log(`🚀 BildyApp API en http://localhost:${config.port}`);
-      console.log(`📚 Swagger en http://localhost:${config.port}/api-docs`);
+      console.log(`BildyApp API en http://localhost:${config.port}`);
+      console.log(`Swagger en http://localhost:${config.port}/api-docs`);
     });
   } catch (error) {
-    console.error('❌ Error al iniciar:', error);
+    console.error('Error al iniciar:', error);
     process.exit(1);
   }
 };
@@ -26,10 +26,10 @@ const shutdown = async (signal) => {
     await new Promise((resolve) => httpServer.close(() => resolve()));
     await closeSocket();
     await mongoose.connection.close();
-    console.log('✅ Cierre limpio');
+    console.log('Cierre limpio');
     process.exit(0);
   } catch (err) {
-    console.error('❌ Error en shutdown:', err);
+    console.error('Error en shutdown:', err);
     process.exit(1);
   }
 };

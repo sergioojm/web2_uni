@@ -28,7 +28,7 @@ export const initSocket = (httpServer) => {
 
   io.on('connection', (socket) => {
     if (process.env.NODE_ENV !== 'test') {
-      console.log(`🔌 socket conectado: ${socket.data.user?.email}`);
+      console.log(`socket conectado: ${socket.data.user?.email}`);
     }
   });
 
