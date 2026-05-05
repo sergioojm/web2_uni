@@ -11,7 +11,7 @@ Backend REST con Node.js + Express 5 + MongoDB para la digitalización de albara
 - JWT access + refresh + bcryptjs
 - Swagger UI (`/api-docs`) con `swagger-jsdoc`
 - Socket.IO con auth JWT y rooms por compañía
-- Multer + Sharp + Cloudinary / Cloudflare R2 (S3) para firmas e imágenes
+- Multer + Sharp + Cloudinary para firmas e imágenes
 - pdfkit para generar PDFs de albaranes
 - Nodemailer para email de verificación
 - Slack Incoming Webhook para errores 5xx
@@ -49,7 +49,7 @@ Los tests usan `mongodb-memory-server` (sin MongoDB externo) y mockean `storage.
 
 ## Variables de entorno
 
-Ver `.env.example`. Imprescindibles: `DB_URI`, `JWT_SECRET`, `JWT_REFRESH_SECRET`. Para subida a la nube, fija `STORAGE_PROVIDER` a `cloudinary` o `r2` y rellena las credenciales correspondientes; sin configurar, se usa `local` (carpeta `uploads/`).
+Ver `.env.example`. Imprescindibles: `DB_URI`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, y las tres variables de Cloudinary.
 
 ## Endpoints
 

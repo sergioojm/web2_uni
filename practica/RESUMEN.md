@@ -152,7 +152,7 @@ Un usuario crea una Company (se convierte en owner/admin). Otros usuarios que se
 - Requiere JWT + tener compania asociada
 - Multer recibe imagen en campo `logo` (multipart/form-data)
 - Filtro MIME (solo `image/*`), limite 5MB
-- Guarda en `uploads/`, almacena URL en `Company.logo`
+- Sube a Cloudinary, almacena URL en `Company.logo`
 
 ### 7. GET /api/user (1 pto)
 
@@ -319,21 +319,6 @@ bildyapp-api/
 ├── .env.example
 ├── .gitignore
 └── README.md
-```
-
----
-
-## Variables de entorno
-
-```env
-PORT=3000
-NODE_ENV=development
-DB_URI=mongodb+srv://user:pass@cluster.mongodb.net/bildyapp
-JWT_SECRET=change-me-access-secret
-JWT_EXPIRES_IN=15m
-JWT_REFRESH_SECRET=change-me-refresh-secret
-JWT_REFRESH_EXPIRES_IN=7d
-UPLOAD_MAX_SIZE=5242880
 ```
 
 ---
